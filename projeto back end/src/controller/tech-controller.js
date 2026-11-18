@@ -1,4 +1,4 @@
-import { deleteEqpService, getAllEqps, getEqpById, patchEqpService, postEqp, putEqpService } from "../services/techs-services.js";
+import { deleteEqpService, getAllEqps, getEqpById, getEqpPaginated, patchEqpService, postEqp, putEqpService } from "../services/techs-services.js";
 
 
 export async function listAllEqps(request, response) {
@@ -15,6 +15,26 @@ export async function listEqpById(request, response) {
     }
 
     response.code(200).send(eqp)
+}
+
+export async function getTechs(request, reply) {
+    try {
+        const page = Number(request.query.page) || 1
+
+        const result = await getEqpPaginated(page)
+
+        console.log("Resultado:", result)
+
+        return reply.code(200).send(result)
+
+    } catch (error) {
+        console.error("ERRO NA PAGINAÇÃO:", error)
+
+        return reply.code(500).send({
+            message: "Erro ao buscar equipamentos",
+            error: error.message
+        })
+    }
 }
 
 export async function createEqp(request, response) {

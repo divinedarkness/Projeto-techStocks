@@ -13,6 +13,33 @@ export async function getEqpById(id) {
     return eqp
 }
 
+export async function getEqpPaginated(page = 1) {
+    const limit = 5
+    const offset = (page - 1) * limit
+
+    const [eqps] = await db.query(
+        "SELECT * FROM equipamentos LIMIT 5 OFFSET ?",
+        [offset]
+    )
+
+    const [result] = await db.query(
+        "SELECT COUNT(*) AS total FROM equipamentos"
+    )
+
+    const totalItems = result[0].total
+    const totalPages = Math.ceil(totalItems / limit)
+
+    return {
+        data: eqps,
+        pagination: {
+            currentPage: page,
+            limit,
+            totalItems,
+            totalPages
+        }
+    }
+}
+
 export async function postEqp(body) {
     const { name, categoria, numeroDeSerie, status } = body
 

@@ -1,10 +1,12 @@
-import { createEqp, deleteEqp, listAllEqps, listEqpById, patchEqp, putEqp } from "../controller/tech-controller.js"
+import { createEqp, deleteEqp, getTechs, listAllEqps, listEqpById, patchEqp, putEqp } from "../controller/tech-controller.js"
 
 export async function techsRoutes(app) {
 
-    app.get('/', listAllEqps)
+    
 
     app.get('/:id', listEqpById)
+
+    app.get("/", getTechs);
 
     app.post('/', createEqp)    
 
